@@ -2,22 +2,26 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var json = require('express-json');
-var Street = require('./streets.js')
-var Bourne = require('bourne')
-var db = new Bourne('test.json')
-var _ = require('underscore')
+var Street = require('./streets.js');
+var Bourne = require('bourne');
+// var db = new Bourne('test.json');
+var _ = require('underscore');
+var path = require('path');
 
-// Create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: true })
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(json());
-app.get('/index.htm', function (req, res) {
-   res.sendFile( __dirname + "/" + "index.htm" );
-})
-app.set('view engine', 'jade');
+app.use(bodyParser.urlencoded({
+   extended: true
+}));
 
-app.post('/table', urlencodedParser, function (req, res) {
+app.get("/", (req, res) => {
+    res.render("index", {});
+});
+
+app.post('/table', function (req, res) {
    // Prepare output in JSON format
    response = {
       adress: JSON.parse(req.body.hid),
@@ -37,7 +41,7 @@ app.post('/table', urlencodedParser, function (req, res) {
 
 })
 
-app.post('/street', urlencodedParser, function (req, res) {
+app.post('/street', function (req, res) {
    // Prepare output in JSON format
    response = {
       adress1:req.body.adress1 || '',

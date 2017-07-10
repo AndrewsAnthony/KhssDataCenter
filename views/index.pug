@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		title Форма заполнения информации по обследовании
+		link(href="css/bootstrap.min.css" rel="stylesheet")
+		link(href="css/select2.min.css" rel="stylesheet")
+		link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="css/style.css" rel="stylesheet")
+	body
+		.container
+			.row
+				.col-md-6.col-md-offset-3
+					select.js-fetch-list-of-buildings-ajax.form-control
+						option(value="" selected="selected") Введите часть названия адреса и номер строения
+			.row
+				.col-md-9.col-md-offset-1
+					form.form.form-inline(role="form")
+						.fieldset
+							.form-group
+								label.col-sm-2.control-label Ремонт кровли
+								.col-sm-10
+									select.js-type-of-repair(name='typeOfRoofRepair').form-control
+										option(value="В удовлетворительном состоянии" selected="selected") В удовлетворительном состоянии
+										option(value="Текущий ремонт" ) Текущий ремонт
+										option(value="Капитальный ремонт" ) Капитальный ремонт
+										option(value="Без видимых наружных повреждений" ) Без видимых наружных повреждений
+									.input-group
+										input.form-control(type="number" placeholder="Объем м2" step='5' min='0' max='10000' name='valueOFRoofRepair')
+										.input-group-addon м2
+									label.radio-inline
+										input(type="radio" value='под' name='bindingOFRoofRepair')
+										| под.
+									label.radio-inline
+										input(type="radio" value='кв' name='bindingOFRoofRepair')
+										| кв.
+									button.btn.btn-primary.glyphicon.glyphicon-plus-sign
+									button.btn.btn-default.glyphicon.glyphicon-minus-sign
+
+
+	//- script(src='js/jquery-1.11.0.min.js')
+	//- script(src='js/bootstrap.min.js')
+	//- script(src='js/select2.full.min.js')

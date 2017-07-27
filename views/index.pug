@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Форма заполнения информации по обследовании
+		link(href="css/bootstrap.min.css" rel="stylesheet")
+		link(href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+		link(href="css/select2.min.css" rel="stylesheet")
+		link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="css/font-awesome.min.css" rel="stylesheet")
+		link(href="css/style.css" rel="stylesheet")
+	body
+		.container
+			.row
+				.page-header
+					h2.well <i>Харьковспецстрой</i> <br> <small>форма по промазке мягких кровель</small>
+					a.btn.btn-info(href='/list')
+						i.fa.fa-list-ol
+						| &nbsp;	
+						|Список обследованного
+					| &nbsp;
+					a.btn.btn-info(href='/table')
+						i.fa.fa-table
+						| &nbsp;	
+						|Таблица обследованного
+					| &nbsp;
+					a.btn.btn-info(href='/diagram') 
+						i.fa.fa-bar-chart
+						| &nbsp;
+						|Отчет по обследованным адресам
+			.row
+				.col-md-8
+					select#js-fetch-list-of-buildings-ajax.form-control
+						option(value="" selected="selected") Введите часть названия адреса и номер строения
+				.col-md-4
+					.requstInfo.well.well-sm.bg-info
+						|Информация по адресу
+
+			.row
+				.col-md-12
+					form.form.form-horizontal(role="form" method='post' action='/survey' enctype="multipart/form-data")
+						fieldset(disabled) 
+
+							input(type="hidden" name='hiddenInfo')
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт кровли
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.js-type-of-repair(name='typeOfRoofRepair').form-control
+													option(value="В удовлетворительном состоянии" selected="selected") В удовлетворительном состоянии
+													option(value="Текущий ремонт" ) Текущий ремонт
+													option(value="Капитальный ремонт" ) Капитальный ремонт
+													option(value="Латочный ремонт" ) Латочный ремонт
+													option(value="Без видимых наружных повреждений" ) Без видимых наружных повреждений
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь ремонта" step='5' min='0' max='10000' name='valueOfRoofRepair')
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofRepair')
+											.radio-check
+												label.radio-inline
+													input(type="radio" value='под' name='bindingOfRoofRepair')
+													| под.
+												label.radio-inline
+													input(type="radio" value='кв' name='bindingOfRoofRepair')
+													| кв.
+												label.radio-inline
+													input(type="radio" value='Отсутствует' name='bindingOfRoofRepair' checked)
+													| Отсутствует
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofRepair' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Наличие строительного мусора
+								.col-sm-10
+									.row
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Объем мусора" step='0.01' min='0' max='10' name='valueOfRoofClear')
+												.input-group-addon м3
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofClear')
+											.radio-check
+												label.radio-inline
+													input(type="radio" value='под' name='bindingOfRoofClear')
+													| под.
+												label.radio-inline
+													input(type="radio" value='кв' name='bindingOfRoofClear')
+													| кв.
+												label.radio-inline
+													input(type="radio" value='Отсутствует' name='bindingOfRoofClear' checked)
+													| Отсутствует
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofClear' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт отдельных элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofElementRepair')
+												option(value="Повреждения не зафиксированы" selected="selected") Повреждения не зафиксированы
+												option(value="Парапет") Парапет
+												option(value="Вентиляционные каналы" ) Вентиляционные каналы
+												option(value="Другие вертикальные элементы" ) Другие вертикальные элементы
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='1000' name='valueOfRoofElementRepair')
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofElementRepair')
+											.radio-check
+												label.radio-inline
+													input(type="radio" value='под' name='bindingOfRoofElementRepair')
+													| под.
+												label.radio-inline
+													input(type="radio" value='кв' name='bindingOfRoofElementRepair')
+													| кв.
+												label.radio-inline
+													input(type="radio" value='Отсутствует' name='bindingOfRoofElementRepair' checked)
+													| Отсутствует
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofElementRepair' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Промазка отдельных элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofElementGlue')
+												option(value="Повреждения не зафиксированы" selected="selected") Повреждения не зафиксированы
+												option(value="Парапетный узел") Парапетный узел
+												option(value="Нахлест рубероидных ковров" ) Нахлест рубероидных ковров 
+												option(value="Дефект рубероидного ковра" ) Дефект рубероидного ковра
+												option(value="Другие виды повреждения" ) Другие виды повреждения
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='100' name='valueOfRoofGlue')
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofGlue')
+											.radio-check
+												label.radio-inline
+													input(type="radio" value='под' name='bindingOfRoofGlue')
+													| под.
+												label.radio-inline
+													input(type="radio" value='кв' name='bindingOfRoofGlue')
+													| кв.
+												label.radio-inline
+													input(type="radio" value='Отсутствует' name='bindingOfRoofGlue' checked)
+													| Отсутствует
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofGlue' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт отдельных металлических элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofMetalRepair')
+												option(value="Повреждения не зафиксированы" selected="selected") Повреждения не зафиксированы
+												option(value="Металлические отливы") Металлические отливы
+												option(value="Металлические карнизные желоба" ) Металлические карнизные желоба
+												option(value="Металлические парапетные шапки" ) Металлические парапетные шапки
+												option(value="Другие металлические элементы" ) Другие металлические элементы
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='100' name='valueOfRoofMetalRepair')
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofMetalRepair')
+											.radio-check
+												label.radio-inline
+													input(type="radio" value='под' name='bindingOfRoofMetalRepair')
+													| под.
+												label.radio-inline
+													input(type="radio" value='кв' name='bindingOfRoofMetalRepair')
+													| кв.
+												label.radio-inline
+													input(type="radio" value='Отсутствует' name='bindingOfRoofMetalRepair' checked)
+													| Отсутствует
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofMetalRepair' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Приоритет
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofPriority' placeholder='Срочность')
+												option(value="Обследовать на слудющий год") Обследовать на следующий год
+												option(value="Необходимо включить в планы работ" ) Необходимо включить в планы работ
+												option(value="Необходим гарантийный ремонт" ) Необходим гарантийный ремонт
+												option(value="Ремонт в кратчайшие сроки" ) Ремонт в кратчайшие сроки
+												option(value="Не определен приоритет" selected="selected") Не определен приоритет
+									.row
+										br
+										.col-sm-12
+											textarea.form-control(name='noteOfRoofPriority' rows="5" placeholder='Примечания')
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Фотоотчет с обследования
+								.col-sm-10
+									input.form-control#photoCallery(type="file" name='photosOfRoof' multiple)
+									div.help-block Блок предосмотра фотографий
+										.row
+													
+
+							.form-group.well.well-sm
+								.col-sm-offset-2.col-sm-10
+									.row
+										.col-sm-12
+											button.btn.btn-default(type='submit') Отправить
+											button.btn.btn-default(type='reset') Сбросить
+									
+										
+
+	script(src='js/jquery-1.11.0.min.js')
+	script(src='js/bootstrap.min.js')
+	script(src='js/select2.full.min.js')
+	script(src='js/i18n/select2.ru.js')
+	script(src='js/script.js')

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Лист всех обследуемых адресов
+		link(href="css/bootstrap.min.css" rel="stylesheet")
+		link(href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+		//- link(href="css/select2.min.css" rel="stylesheet")
+		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="css/font-awesome.min.css" rel="stylesheet")
+		link(href="css/style.css" rel="stylesheet")
+	body
+		.container
+			.row
+				.page-header
+					h2.well <i>Харьковспецстрой</i> <br> <small>Результаты обследования по промазке мягких кровель</small>
+					a.btn.btn-info(href='/') 
+						i.fa.fa-plus
+						| &nbsp;	
+						|Добавить адрес
+					| &nbsp;
+					a.btn.btn-info(href='/table') 
+						i.fa.fa-table
+						| &nbsp;	
+						|Таблица адресов
+					| &nbsp;
+					a.btn.btn-info(href='/diagram')
+						i.fa.fa-bar-chart
+						| &nbsp;	
+						|Отчет по обследованным адресам
+			.row
+				each obj in listResult
+					.panel-group#accordion
+						.panel.panel-default
+							.panel-heading
+								.panel-title
+									a(data-toggle="collapse" data-parent="#accordion" href="#collapse" + obj['id'] )
+										|#{obj['id']} ) #{obj['address']['6']} #{obj['address']['7']} , #{obj['address']['11']}
+							.panel-collapse.collapse(id="collapse" + obj['id'])
+								.panel-body
+									.row
+
+										.col-sm-4
+											ul.list-group
+												li.list-group-item Район - #{obj['address']['2']} 
+												li.list-group-item Участок - #{obj['address']['3']} 
+												li.list-group-item Этажность - #{obj['address']['17']}
+												li.list-group-item Тип кровли - #{obj['address']['23']}
+												li.list-group-item Общий объем кровли - #{obj['address']['22']} м2
+											a.btn.btn-default(href='#') Редактировать
+											| &nbsp;
+											a.btn.btn-default(href='#') Загрузить фотографии
+											
+
+										.col-sm-8
+											ul.list-group
+												li.list-group-item 
+													.row
+														.col-sm-6
+															h4 Ремонт кровли
+															hr 
+															i #{obj['repair']['type']}:
+															| &nbsp;
+															if (obj['repair']['value'] !== "")
+																b #{obj['repair']['value']} м2 <br>
+																i Привязка: 
+																each val, ind in obj['repair']['bindingNumbers']
+																	if (val == '')
+																		| #{val}
+																	else 
+																		b #{obj['repair']['bindingType']} #{val}
+																	if (ind !== obj['repair']['bindingNumbers'].length - 1)
+																		| #{", "}
+														.col-sm-6
+															h5 Примичания
+															| #{obj['repair']['note']}
+												li.list-group-item 
+													.row
+														.col-sm-6
+															h4 Очистка от мусора
+															hr 
+															if (obj['clear']['value'] !== "")
+																b #{obj['clear']['value']} м3 <br>
+																i Привязка: 
+																| #{obj['clear']['bindingType']}
+																each val, ind in obj['clear']['bindingNumbers']
+																		if (val == '')
+																			| #{val}
+																		else 
+																			b #{obj['clear']['bindingType']} #{val}
+																		if (ind !== obj['clear']['bindingNumbers'].length - 1)
+																			| #{", "}
+														.col-sm-6
+															h5 Примичания
+															| #{obj['clear']['note']}
+												li.list-group-item 
+													li.list-group-item 
+														.row
+															.col-sm-6
+																h4 Ремонт отдельных элементов
+																hr 
+																i #{obj['element']['type']}:
+																| &nbsp;
+																if (obj['element']['value'] !== "")
+																	b #{obj['element']['value']} м2 <br>
+																	i Привязка: 
+																	each val, ind in obj['element']['bindingNumbers']
+																		if (val == '')
+																			| #{val}
+																		else 
+																			b #{obj['element']['bindingType']} #{val}
+																		if (ind !== obj['element']['bindingNumbers'].length - 1)
+																			| #{", "}
+															.col-sm-6
+																h5 Примичания
+																| #{obj['element']['note']}
+												li.list-group-item 
+													li.list-group-item 
+														.row
+															.col-sm-6
+																h4 Проклейка
+																hr 
+																i #{obj['glue']['type']}:
+																| &nbsp;
+																if (obj['glue']['value'] !== "")
+																	b #{obj['glue']['value']} м2 <br>
+																	i Привязка: 
+																	each val, ind in obj['glue']['bindingNumbers']
+																		if (val == '')
+																			| #{val}
+																		else 
+																			b #{obj['glue']['bindingType']} #{val}
+																		if (ind !== obj['glue']['bindingNumbers'].length - 1)
+																			| #{", "}
+															.col-sm-6
+																h5 Примичания
+																| #{obj['glue']['note']}
+												li.list-group-item 
+													li.list-group-item 
+														.row
+															.col-sm-6
+																h4 Ремонт металлических элементов
+																hr 
+																i #{obj['metal']['type']}:
+																| &nbsp;
+																if (obj['metal']['value'] !== "")
+																	b #{obj['metal']['value']} м2 <br>
+																	i Привязка: 
+																	each val, ind in obj['metal']['bindingNumbers']
+																		if (val == '')
+																			| #{val}
+																		else 
+																			b #{obj['metal']['bindingType']} #{val}
+																		if (ind !== obj['metal']['bindingNumbers'].length - 1)
+																			| #{", "}
+															.col-sm-6
+																h5 Примичания
+																| #{obj['metal']['note']}
+												li.list-group-item 
+													li.list-group-item 
+														.row
+															.col-sm-6
+																h4 Приоритет
+																hr
+																i #{obj['priority']['type']}
+															.col-sm-6
+																h5 Примичания
+																| #{obj['priority']['note']}
+											.row.imageBlock
+											each photo, ind in obj['photos']
+												img(src='img/survey/' + obj['key'] + "/" + photo).img-thumbnail.img-responsive
+
+	script(src='js/jquery-1.11.0.min.js')
+	script(src='js/bootstrap.min.js')
+	//- script(src='js/select2.full.min.js')
+	//- script(src='js/i18n/select2.ru.js')
+	//- script(src='js/script.js')

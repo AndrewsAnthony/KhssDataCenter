@@ -1,0 +1,4 @@
+node_modules/
+testDB.json
+public/js/bower_components/
+public/img/

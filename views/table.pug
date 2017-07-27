@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Лист всех обследуемых адресов
+		link(href="css/bootstrap.min.css" rel="stylesheet")
+		link(href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+		//- link(href="css/select2.min.css" rel="stylesheet")
+		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="css/font-awesome.min.css" rel="stylesheet")
+		link(href="css/style.css" rel="stylesheet")
+	body
+		.container-fluid
+			.page-header
+				h2.well Итоговая таблица по промазке 
+				a.btn.btn-info(href='/') 
+					i.fa.fa-plus
+					| &nbsp;
+					|К форме заполнения 
+				| &nbsp;
+				a.btn.btn-info(href='/list') 
+					i.fa.fa-list-ol
+					| &nbsp;
+					|Список адресов с подробной информацией
+				| &nbsp;
+				a.btn.btn-info(href='/diagram') 
+					i.fa.fa-bar-chart
+					| &nbsp;
+					|Отчет по обследованным адресам
+
+		table.table-hover.table-bordered.table-condensed.text-center
+			thead
+				th.text-center Номер строки
+				th.text-center Район
+				th.text-center Участок
+				th.text-center Строение
+				th.text-center Улица
+				th.text-center Номер дома
+				th.text-center Этажность
+				th.text-center Тип кровли
+				th.text-center Общий объем кровли м2
+				th.text-center Очистка от мусора м3
+				th.text-center Ремонт отдельных мест м2
+				th.text-center Проклейка швов мп
+				th.text-center Ремонт металлических элементов м2
+			tbody
+				each obj, inx in listResult
+					tr
+						td #{obj['id']}
+						td #{obj['address']['2']}
+						td #{obj['address']['3']}
+						td #{obj['address']['4']}
+						td #{obj['address']['7']}
+						td #{obj['address']['11']}
+						td #{obj['address']['17']}
+						td #{obj['address']['23']}
+						td #{obj['address']['22']}
+						td 
+							if (obj['clear']['value'] !== "")
+								b #{obj['clear']['value']} м3 
+						td
+							if (obj['element']['value'] !== "")
+								b #{obj['element']['value']} м2 
+							| #{obj['element']['type']}
+						td 
+							if (obj['glue']['value'] !== "")
+								b #{obj['glue']['value']} м2 
+							| #{obj['glue']['type']}
+						td 
+							if (obj['metal']['value'] !== "")
+								b #{obj['metal']['value']} м2 
+							| #{obj['metal']['type']}
+
+	script(src='js/jquery-1.11.0.min.js')
+	script(src='js/bootstrap.min.js')
+	//- script(src='js/select2.full.min.js')
+	//- script(src='js/i18n/select2.ru.js')
+	//- script(src='js/script.js')

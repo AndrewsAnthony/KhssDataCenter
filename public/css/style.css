@@ -1,0 +1,69 @@
+.header, .form {
+	margin-top: 50px;
+}
+
+.well {
+	background: #eeefea;
+}
+
+html * {
+	font-family: 'Roboto', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-weight: bold;
+}
+
+.radio-check {
+	margin-bottom: 20px;
+	text-align: justify;
+}
+
+.input-group {
+	margin-bottom: 20px;
+}
+
+.image33 {
+	width: 33%;
+	height: auto;
+	padding: 18px;
+	vertical-align: bottom;
+}
+.image66 {
+	width: 66%;
+	height: auto;
+	padding: 18px;
+	vertical-align: bottom;
+}
+.requstInfo {
+	background: #d9edf7!important;
+}
+.imageBlock img {
+	width: 33%
+}
+
+/*svg*/
+.bar {
+	fill: #eeefea;
+	stroke-width: 1;
+	stroke: grey;
+}
+
+.bar0 {
+	fill: #5bc0de;
+}
+
+.bar1 {
+	fill: #FFA500;
+}
+.legend0 {
+	color: #5bc0de;
+}
+
+.legend1 {
+	color: #FFA500;
+}
+
+svg text {
+	font-family: 'Roboto', sans-serif;
+}

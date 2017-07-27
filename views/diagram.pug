@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Лист всех обследуемых адресов
+		link(href="css/bootstrap.min.css" rel="stylesheet")
+		link(href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+		//- link(href="css/select2.min.css" rel="stylesheet")
+		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="css/font-awesome.min.css" rel="stylesheet")
+		link(href="css/style.css" rel="stylesheet")
+	body
+		.container
+			.row
+				.page-header
+					h2.well Результаты обследования
+					a.btn.btn-info(href='/')
+						i.fa.fa-plus
+						| &nbsp;
+						|К форме заполнения 
+					| &nbsp;
+					a.btn.btn-info(href='/list')
+						i.fa.fa-list-ol
+						| &nbsp;
+						|Список адресов с подробной информацией
+					| &nbsp;
+					a.btn.btn-info(href='/table')
+						i.fa.fa-table
+						| &nbsp;	
+						|Таблица обследованного
+			.row
+				.diagram
+					h4.well Цвета района:
+						| &nbsp;
+						span.legend0 Ново-Баварский
+						| &nbsp; 
+						span.legend1 Основянский
+
+
+	script(src='js/jquery-1.11.0.min.js')
+	script(src='js/bootstrap.min.js')
+	script(src='js/d3.v3.min.js')
+	//- script(src="js/d3-sankey@0.6.1.js")
+	script(src="js/d3-sankey.js")
+	//- script(src="js/d3-shape.js")
+	script(src="https://d3js.org/d3-path.v1.min.js")
+	script(src="https://d3js.org/d3-shape.v1.min.js")
+	script.
+		listResult = !{JSON.stringify(listResult)}
+	script(src='js/diagram.js')

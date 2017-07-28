@@ -271,8 +271,8 @@ var Diagram = {
 		})
 })
 
-var width = 450;
-var height = 450;
+var width = 950;
+var height = 600;
 
 var svg = d3.select('.diagram')
 .append("svg")
@@ -281,12 +281,12 @@ var svg = d3.select('.diagram')
 
 // var formatNumber = d3.format(",.0f"),
 // format = function(d) { return formatNumber(d) + " TWh"; },
-var color = d3.scale.ordinal(d3.schemeCategory10);
+var color = d3.scale.ordinal(d3.schemeCategory20);
 
 var sankey = d3.sankey()
 .nodeWidth(20)
 .nodePadding(35)
-.extent([[1, 1], [width - 1, height - 6]]);
+.extent([[0, 0], [width - 1, height - 6]]);
 
 var link = svg.append("g")
 .attr("class", "links")
@@ -313,50 +313,61 @@ var floorLevelNodes = floorLevel.map(function(val){
 		'name': val + ' этажный'
 	}
 })
+floorLevelNodes = floorLevelNodes.concat(districtNodes, districtNames)
 
 var FloorLevelRoofValueLinks = [];
 FloorLevelRoofValue.forEach(function(dist, ind){
 	
 	var floorLinks = dist.map(function(floor, indx){
 		return floor.map(function(numDist, inds){
-			console.log(indx,inds)
 			return {
-				// 'source': floorLevelNodes[indx].name,
-				// 'target': district[ind][inds] + ' участок',
-				'source': indx,
-				'target': 11 + inds,
+				'source': floorLevelNodes.map(function(e) { return e.name; }).indexOf(floorLevelNodes[indx].name),
+				'target': floorLevelNodes.map(function(e) { return e.name; }).indexOf(district[ind][inds] + ' участок'),
 				'value': numDist.value,
 				'count': numDist.count
 			}
 		})
 	}).reduce(function(a, b){ return a.concat(b) })
 	
+
 	var districtLinks = dist.map(function(floor, indx){
-		return floor.reduce(function(objReduce, distObj, inds){
-			objReduce['value'] = objReduce['value'] + distObj.value
-			objReduce['count'] = objReduce['count'] + distObj.count
-			return objReduce
-		}, {
-			// 'source': district[ind][indx] + ' участок',
-			// 'target': districtNames[ind].name,
-			'source': indx,
-			'target': 11 + 8 + indx,
-			'value': 0,
-			'count': 0
+		return floor.map(function(distObj, inds){
+			return {
+				'source': floorLevelNodes.map(function(e) { return e.name; }).indexOf(district[ind][inds] + ' участок'),
+				'target': floorLevelNodes.map(function(e) { return e.name; }).indexOf(districtNames[ind].name),
+				'value': distObj.value,
+				'count': distObj.count
+			}
 		})
 	})
-	
+
+	var dist = district[ind].map(function(disNum, indsx){
+		return {
+			'source': floorLevelNodes.map(function(e) { return e.name; }).indexOf(disNum + ' участок'),
+			'target': floorLevelNodes.map(function(e) { return e.name; }).indexOf(districtNames[ind].name),
+			'value': districtLinks.reduce(function(a, b, i){
+				return a += b[indsx].value
+			}, 0),
+			'count': districtLinks.reduce(function(a, b, i){
+				return a += b[indsx].count
+			}, 0)
+		}
+	})
+
+	districtLinks = dist
 	FloorLevelRoofValueLinks.push(floorLinks)
+
 	FloorLevelRoofValueLinks.push(districtLinks)
 })
+
 
 FloorLevelRoofValueLinks = FloorLevelRoofValueLinks.reduce(function(a, b){ return a.concat(b) })
 
 var dataToSankey = {
-	'nodes': floorLevelNodes.concat(districtNodes, districtNames),
+	'nodes': floorLevelNodes,
 	'links': FloorLevelRoofValueLinks
 }
-console.log("dataToSankey", dataToSankey);
+console.info("dataToSankey", dataToSankey['nodes']);
 
 sankey(dataToSankey);
 
@@ -392,7 +403,7 @@ node.append("text")
 .attr("text-anchor", "start");
 
 node.append("title")
-.text(function(d) { return d.name + "\n" + format(d.value); });
+.text(function(d) { return d.name + "\n" + d.value; });
 
 }
 };

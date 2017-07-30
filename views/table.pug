@@ -11,6 +11,7 @@ html(lang="en")
 		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
 		link(href="css/font-awesome.min.css" rel="stylesheet")
 		link(href="css/style.css" rel="stylesheet")
+		link(href="css/tablesorter.css" rel="stylesheet")
 	body
 		.container-fluid
 			.page-header
@@ -30,21 +31,21 @@ html(lang="en")
 					| &nbsp;
 					|Отчет по обследованным адресам
 
-		table.table-hover.table-bordered.table-condensed.text-center
+		table.table-hover.table-bordered.table-condensed.text-center.tablesorter
 			thead
-				th.text-center Номер строки
-				th.text-center Район
-				th.text-center Участок
-				th.text-center Строение
-				th.text-center Улица
-				th.text-center Номер дома
-				th.text-center Этажность
-				th.text-center Тип кровли
-				th.text-center Общий объем кровли м2
-				th.text-center Очистка от мусора м3
-				th.text-center Ремонт отдельных мест м2
-				th.text-center Проклейка швов мп
-				th.text-center Ремонт металлических элементов м2
+				th.text-left Номер строки
+				th.text-left Район
+				th.text-left Участок
+				th.text-left Строение
+				th.text-left Улица
+				th.text-left Номер дома
+				th.text-left Этажность
+				th.text-left Тип кровли
+				th.text-left Общий объем кровли м2
+				th.text-left Очистка от мусора м3
+				th.text-left Ремонт отдельных мест м2
+				th.text-left Проклейка швов мп
+				th.text-left Ремонт металлических элементов м2
 			tbody
 				each obj, inx in listResult
 					tr
@@ -75,6 +76,13 @@ html(lang="en")
 
 	script(src='js/jquery-1.11.0.min.js')
 	script(src='js/bootstrap.min.js')
+	script(src='js/jquery.tablesorter.min.js')
+	script
+		|$(document).ready(function() {
+		|	$("table").tablesorter({
+		|		sortMultiSortKey: 'shiftKey'
+		|	});
+		|});
 	//- script(src='js/select2.full.min.js')
 	//- script(src='js/i18n/select2.ru.js')
 	//- script(src='js/script.js')

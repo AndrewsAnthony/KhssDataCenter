@@ -67,3 +67,25 @@ h1,h2,h3,h4,h5,h6 {
 svg text {
 	font-family: 'Roboto', sans-serif;
 }
+
+
+
+
+
+
+
+
+/*carousel style*/
+
+.owl-carousel {
+	margin-top: 20px;
+}
+.owl-carousel .owl-item {
+	min-height: 250px;
+    background: url(../img/dist/ajax-loader.gif) no-repeat center center;
+}
+
+
+
+
+

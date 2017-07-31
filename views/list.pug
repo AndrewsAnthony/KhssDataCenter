@@ -10,6 +10,8 @@ html(lang="en")
 		//- link(href="css/select2.min.css" rel="stylesheet")
 		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
 		link(href="css/font-awesome.min.css" rel="stylesheet")
+		link(href="css/owl.carousel.css" rel="stylesheet")
+		link(href="css/owl.theme.default.css" rel="stylesheet")
 		link(href="css/style.css" rel="stylesheet")
 	body
 		.container
@@ -51,9 +53,16 @@ html(lang="en")
 												li.list-group-item Общий объем кровли - #{obj['address']['22']} м2
 											a.btn.btn-default(href='#') Редактировать
 											| &nbsp;
-											a.btn.btn-default(href='#') Загрузить фотографии
-											
+											if (!obj['photos'].length)
+												|Фотографии отсутсвуют
+											else
+												a.btn.btn-default(href='#').js-upload-photos Загрузить фотографии
+												.owl-carousel.owl-theme
+													each photo, ind in obj['photos']
+														img(data-src='img/survey/' + obj['key'] + "/" + photo).img-thumbnail.img-responsive.owl-lazy
+									
 
+									
 										.col-sm-8
 											ul.list-group
 												li.list-group-item 
@@ -168,12 +177,11 @@ html(lang="en")
 															.col-sm-6
 																h5 Примичания
 																| #{obj['priority']['note']}
-											.row.imageBlock
-											each photo, ind in obj['photos']
-												img(src='img/survey/' + obj['key'] + "/" + photo).img-thumbnail.img-responsive
 
 	script(src='js/jquery-1.11.0.min.js')
 	script(src='js/bootstrap.min.js')
+	script(src='js/owl.carousel.min.js')
+	script(src='js/js-upload-photos.js')
 	//- script(src='js/select2.full.min.js')
 	//- script(src='js/i18n/select2.ru.js')
 	//- script(src='js/script.js')

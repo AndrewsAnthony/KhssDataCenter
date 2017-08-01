@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Форма изменения информации по выбранному адресу
+		link(href="../css/bootstrap.min.css" rel="stylesheet")
+		link(href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+		//- link(href="css/select2.min.css" rel="stylesheet")
+		//- link(href="css/select2-bootstrap.min.css" rel="stylesheet")
+		link(href="../css/font-awesome.min.css" rel="stylesheet")
+		link(href="../css/style.css" rel="stylesheet")
+	body
+		.container
+			.row
+				.page-header.text-center
+					h2.well <i>Харьковспецстрой</i> <br> <small>форма редактирования по промазке мягких кровель</small>
+					.btn-group(role="group")
+						a.btn.btn-info(href='/') 
+							i.fa.fa-plus
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Добавить адрес
+						| &nbsp;
+						a.btn.btn-info(href='/list')
+							i.fa.fa-list-ol
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Список обследованного
+						| &nbsp;
+						a.btn.btn-info(href='/table')
+							i.fa.fa-table
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Таблица обследованного
+						| &nbsp;
+						a.btn.btn-info(href='/diagram') 
+							i.fa.fa-bar-chart
+							| &nbsp;
+							span.hidden-sm.hidden-xs Отчет по обследованным адресам
+
+			.row
+				.col-md-12
+					form.form.form-horizontal(role="form" method='post' action='/update/' + addressObj['key'] enctype="multipart/form-data")
+						fieldset
+
+							.jumbotron 
+								h2 #{addressObj['address']['6']} #{addressObj['address']['7']} , #{addressObj['address']['11']}
+								p 
+									i Введите новые параметры и потвердите изменения
+							
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт кровли
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.js-type-of-repair(name='typeOfRoofRepair').form-control
+													- var repairOptionArr = ['В удовлетворительном состоянии', 'Текущий ремонт', 'Капитальный ремонт', 'Латочный ремонт', 'Без видимых наружных повреждений']
+													each opt in repairOptionArr
+														option(
+															value= opt
+															selected= (opt == addressObj['repair']['type'])
+														) #{opt}
+
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь ремонта" step='5' min='0' max='10000' name='valueOfRoofRepair' value='' + addressObj['repair']['value'])
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofRepair' value='' + addressObj['repair']['bindingNumbers'].join(', '))
+											.radio-check
+												- var repairOptionArr = ['под', 'кв', 'Отсутствует']
+												each opt in repairOptionArr
+													label.radio-inline
+														input(
+															type="radio" 
+															value=opt 
+															name='bindingOfRoofRepair' 
+															checked= (opt == addressObj['repair']['bindingType'])
+														) 
+														| #{opt}
+
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofRepair' rows="5" placeholder='Примечания' value='' + addressObj['repair']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Наличие строительного мусора
+								.col-sm-10
+									.row
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Объем мусора" step='0.01' min='0' max='10' name='valueOfRoofClear' value='' + addressObj['clear']['value'])
+												.input-group-addon м3
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofClear' value='' + addressObj['clear']['bindingNumbers'].join(', '))
+											.radio-check
+												- var repairOptionArr = ['под', 'кв', 'Отсутствует']
+												each opt in repairOptionArr
+													label.radio-inline
+														input(
+															type="radio" 
+															value=opt 
+															name='bindingOfRoofClear' 
+															checked= (opt == addressObj['clear']['bindingType'])
+														) 
+														| #{opt}
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofClear' rows="5" placeholder='Примечания' value='' + addressObj['clear']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт отдельных элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofElementRepair')
+												- var repairOptionArr = ['Повреждения не зафиксированы', 'Парапет', 'Вентиляционные каналы', 'Другие вертикальные элементы']
+													each opt in repairOptionArr
+														option(
+															value= opt
+															selected= (opt == addressObj['element']['type'])
+														) #{opt}
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='1000' name='valueOfRoofElementRepair' value='' + addressObj['element']['value'])
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofElementRepair' value='' + addressObj['element']['bindingNumbers'].join(', '))
+											.radio-check
+												- var repairOptionArr = ['под', 'кв', 'Отсутствует']
+												each opt in repairOptionArr
+													label.radio-inline
+														input(
+															type="radio" 
+															value=opt 
+															name='bindingOfRoofElementRepair' 
+															checked= (opt == addressObj['element']['bindingType'])
+														) 
+														| #{opt}
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofElementRepair' rows="5" placeholder='Примечания' value='' + addressObj['element']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Промазка отдельных элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofElementGlue')
+												- var repairOptionArr = ['Повреждения не зафиксированы', 'Парапетный узел', 'Нахлест рубероидных ковров', 'Дефект рубероидного ковра', 'Другие виды повреждения']
+													each opt in repairOptionArr
+														option(
+															value= opt
+															selected= (opt == addressObj['glue']['type'])
+														) #{opt}
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='100' name='valueOfRoofGlue' value='' + addressObj['glue']['value'])
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofGlue' value='' + addressObj['glue']['bindingNumbers'].join(', '))
+											.radio-check
+												- var repairOptionArr = ['под', 'кв', 'Отсутствует']
+												each opt in repairOptionArr
+													label.radio-inline
+														input(
+															type="radio" 
+															value=opt 
+															name='bindingOfRoofGlue' 
+															checked= (opt == addressObj['glue']['bindingType'])
+														) 
+														| #{opt}
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofGlue' rows="5" placeholder='Примечания' value='' + addressObj['glue']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Ремонт отдельных металлических элементов
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofMetalRepair')
+												- var repairOptionArr = ['Повреждения не зафиксированы', 'Металлические отливы', 'Металлические карнизные желоба', 'Металлические парапетные шапки', 'Другие виды повреждения']
+													each opt in repairOptionArr
+														option(
+															value= opt
+															selected= (opt == addressObj['metal']['type'])
+														) #{opt}
+									.row
+										br
+										.col-sm-4
+											.input-group
+												input.form-control(type="number" placeholder="Площадь" step='2.5' min='0' max='100' name='valueOfRoofMetalRepair' value='' + addressObj['metal']['value'])
+												.input-group-addon м2
+										.col-sm-4
+											.radio-ext
+												input.form-control(type="text" placeholder="# Привязка - Перечислить через запятую" name='bindingNumberOfRoofMetalRepair' value='' + addressObj['metal']['bindingNumbers'].join(', '))
+											.radio-check
+												- var repairOptionArr = ['под', 'кв', 'Отсутствует']
+												each opt in repairOptionArr
+													label.radio-inline
+														input(
+															type="radio" 
+															value=opt 
+															name='bindingOfRoofMetalRepair' 
+															checked= (opt == addressObj['metal']['bindingType'])
+														) 
+														| #{opt}
+										.col-sm-4
+											textarea.form-control(name='noteOfRoofMetalRepair' rows="5" placeholder='Примечания' value='' + addressObj['metal']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Приоритет
+								.col-sm-10
+									.row
+										.col-sm-12
+											select.form-control(name='typeOfRoofPriority' placeholder='Срочность')
+												- var repairOptionArr = ['Обследовать на слудющий год', 'Необходимо включить в планы работ', 'Необходим гарантийный ремонт', 'Ремонт в кратчайшие сроки', 'Не определен приоритет']
+													each opt in repairOptionArr
+														option(
+															value= opt
+															selected= (opt == addressObj['priority']['type'])
+														) #{opt}
+									.row
+										br
+										.col-sm-12
+											textarea.form-control(name='noteOfRoofPriority' rows="5" placeholder='Примечания' value='' + addressObj['priority']['note'])
+
+							.form-group.well.well-sm
+								label.col-sm-2.control-label Фотоотчет с обследования
+								.col-sm-10
+									input.form-control(type="hidden" name='photosOfRoofHidden' value='' + addressObj['photos'].join(','))
+									input.form-control#photoCallery(type="file" name='photosOfRoof' multiple)
+									div.help-block Блок предосмотра фотографий
+										.row
+													
+
+							.form-group.well.well-sm
+								.col-sm-offset-2.col-sm-10
+									.row
+										.col-sm-12
+											button.btn.btn-default(type='submit') Внести изменения
+											a.btn.btn-default(href='/list') Отмена
+									
+										
+
+	script(src='../js/jquery-1.11.0.min.js')
+	script(src='../js/bootstrap.min.js')
+	//- script(src='../js/select2.full.min.js')
+	//- script(src='../js/i18n/select2.ru.js')
+	script(src='../js/update-script.js')

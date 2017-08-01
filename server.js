@@ -25,7 +25,8 @@ function helpParseInt(num){
 }
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ derivative to varible
 var db = new Bourne('testDB.json');
-var storage = multer.diskStorage({
+
+var storageInclude = multer.diskStorage({
 	destination: function (req, file, cb) {
 		var hiddenObj = JSON.parse(req.body.hiddenInfo);
 		var newDestination = 'public/img/survey/' + hiddenObj['1'];
@@ -46,7 +47,28 @@ var storage = multer.diskStorage({
 	}
 })
 
-var upload = multer({ storage: storage })
+var storageUpdate = multer.diskStorage({
+	destination: function (req, file, cb) {
+		var newDestination = 'public/img/survey/' + parseInt(req.params.id, 10);
+		var stat = null;
+		try {
+			stat = fs.statSync(newDestination);
+		} catch (err) {
+			fs.mkdirSync(newDestination);
+		}
+		if (stat && !stat.isDirectory()) {
+			throw new Error('Directory cannot be created because an inode of a different type exists at "' + newDestination + '"');
+		}   
+		cb(null, newDestination)
+	},
+	filename: function (req, file, cb) {
+		cb(null, parseInt(req.params.id, 10) + "_"  + Date.now() + "."+file.mimetype.slice(6))
+	}
+})
+
+var uploadInclude = multer({ storage: storageInclude })
+var uploadUpdate = multer({ storage: storageUpdate })
+
 var bodyParser = bodyParser.urlencoded({
 	extended: true
 })
@@ -92,7 +114,97 @@ app.get('/diagram', function(req, res){
 	})
 })
 
-app.post('/survey', upload.array('photosOfRoof', 15),function (req, res) {
+app.get('/update/:id', function(req, res){
+	var id = helpParseInt(req.params.id);
+	db.findOne({ key : id }, function(err, result){
+		if(err) {
+			console.log(err)
+		}
+		if (!result) {
+			res.status(404).end('Empty')
+		} else {
+			res.render("update", { addressObj: result})
+		}
+	})
+})
+
+app.post('/update/:id', uploadUpdate.array('photosOfRoof', 15), function(req, res){
+
+	var id = helpParseInt(req.params.id);
+
+	async.waterfall([
+		function(callback){
+			var parsingObj = {
+				repair : {
+					type: req.body.typeOfRoofRepair,
+					value: helpParseInt(req.body.valueOfRoofRepair),
+					bindingNumbers: helpSplitStrToArr(req.body.bindingNumberOfRoofRepair),
+					bindingType: req.body.bindingOfRoofRepair,
+					note: req.body.noteOfRoofRepair.trim()
+				},
+				clear: {
+					value: req.body.valueOfRoofClear.replace(/[^\d,.]/g, ''),
+					bindingNumbers: helpSplitStrToArr(req.body.bindingNumberOfRoofClear),
+					bindingType: req.body.bindingOfRoofClear,
+					note: req.body.noteOfRoofClear.trim()
+				},
+				element: {
+					type: req.body.typeOfRoofElementRepair,
+					value: helpParseInt(req.body.valueOfRoofElementRepair),
+					bindingNumbers: helpSplitStrToArr(req.body.bindingNumberOfRoofElementRepair),
+					bindingType: req.body.bindingOfRoofElementRepair,
+					note: req.body.noteOfRoofElementRepair.trim()
+				},
+				glue: {
+					type: req.body.typeOfRoofElementGlue,
+					value: helpParseInt(req.body.valueOfRoofGlue),
+					bindingNumbers: helpSplitStrToArr(req.body.bindingNumberOfRoofGlue),
+					bindingType: req.body.bindingOfRoofGlue,
+					note: req.body.noteOfRoofGlue.trim()
+				},
+				metal: {
+					type: req.body.typeOfRoofMetalRepair,
+					value: helpParseInt(req.body.valueOfRoofMetalRepair),
+					bindingNumbers: helpSplitStrToArr(req.body.bindingNumberOfRoofMetalRepair),
+					bindingType: req.body.bindingOfRoofMetalRepair,
+					note: req.body.noteOfRoofMetalRepair.trim()
+				},
+				priority: {
+					type: req.body.typeOfRoofPriority,
+					note: req.body.noteOfRoofPriority.trim()
+				},
+				photos: [].concat(req.body.photosOfRoofHidden.split(',')).filter(function(val){ return val !== '' })
+			};
+			callback(null, parsingObj);
+		},
+		function(parsingObj, callback){
+			var parsingObjPhotos = [], i;
+			for( i = 0 ; i <= req.files.length; i++){
+				if (i == (req.files.length)) {
+					callback(null, parsingObj);
+					break;
+				}
+				parsingObj.photos.push(req.files[i].filename)
+			}
+		},
+		function(parsingObj, callback){
+			db.update({ key : id }, {$set: parsingObj}, function(err, result){
+				if(err) {
+					console.log(err)
+				}
+				callback(null, result)
+				
+			})
+			;
+		}
+		], function (err, result) {
+			res.redirect(301, '/list')
+		}
+		);
+
+})
+
+app.post('/survey', uploadInclude.array('photosOfRoof', 15),function(req, res) {
 	var addArr = JSON.parse(req.body.hiddenInfo);
 	
 	async.waterfall([
@@ -180,8 +292,6 @@ app.get('/check/:id', function(req, res){
 			res.status(200).end('Included')
 		}
 	})
-
-	
 })
 
 app.post('/street', bodyParser, function (req, res) {
@@ -203,10 +313,10 @@ app.post('/street', bodyParser, function (req, res) {
 app.get('/result', function(req, res){
 	var result = db.find({}, function(err, objs){
 		if (err) console.log(err)
-	  // var sorObjs = _.sortBy(objs, ['adress']['3']);
-	console.log(objs)
-	res.render('result', { tableResult: objs});
-})
+
+			console.log(objs)
+		res.render('result', { tableResult: objs});
+	})
 })
 
 var server = app.listen(8080, function () {

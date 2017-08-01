@@ -51,9 +51,9 @@ html(lang="en")
 												li.list-group-item Этажность - #{obj['address']['17']}
 												li.list-group-item Тип кровли - #{obj['address']['23']}
 												li.list-group-item Общий объем кровли - #{obj['address']['22']} м2
-											a.btn.btn-default(href='#') Редактировать
+											a.btn.btn-default(href="/update/" + obj['key']) Редактировать
 											| &nbsp;
-											if (!obj['photos'].length)
+											if ( !obj['photos'].length )
 												|Фотографии отсутсвуют
 											else
 												a.btn.btn-default(href='#').js-upload-photos Загрузить фотографии

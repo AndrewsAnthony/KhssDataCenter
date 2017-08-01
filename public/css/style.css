@@ -2,7 +2,15 @@
 	margin-top: 50px;
 }
 
+.form[action*='update'] {
+	margin-top: 0;
+}
+
 .well {
+	background: #eeefea;
+}
+
+.jumbotron {
 	background: #eeefea;
 }
 

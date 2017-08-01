@@ -1,5 +1,22 @@
+$(document).ready(function(){
+// BOOTBOX PLUGIN
+
+bootbox.setLocale('ru')
+function handleBeforeSubmitForm(e){
+	e.preventDefault();
+	function callback(result){
+		if (result) e.target.submit()
+	}
+
+var message = 'Вы уверены введенных данных?'
+return bootbox.confirm(message, callback)
+}
+
+document.querySelector('.form').addEventListener('submit', handleBeforeSubmitForm)
+
+
+
 function handleSelectSelect(evt){
-	console.log(evt)
 	var objString = JSON.stringify(evt.params.data.parseInfo);
 	document.querySelector('input[name="hiddenInfo"]').value = objString;
 	$.get('/check/' + evt.params.data.parseInfo[1], successCheckAddress)
@@ -10,15 +27,20 @@ function handleOpenSelect(evt){
 }
 
 function successCheckAddress(data){
-	console.log(data)
 	if (data == "Empty"){
 		document.querySelector('fieldset').removeAttribute('disabled')
-		document.querySelector('.requstInfo').innerHTML = 'Введите информацию в форму'
+		var inf = document.querySelector('.requstInfo')
+		inf.classList.remove('shake')
+		inf.innerHTML = 'Форма разблокирована';
+		setTimeout(function(){ inf.classList.add('shake') }, 500)
+
 	} else if (data == "Included") {
 		document.querySelector('fieldset').setAttribute('disabled','disabled')
-		document.querySelector('.requstInfo').innerHTML = 'Данынй адрес имеется в базе данных'
+		var inf = document.querySelector('.requstInfo')
+		inf.classList.remove('shake')
+		inf.innerHTML = 'Форма заблокирована';
+		bootbox.alert('По данному адресу уже внесены данны. Просьба перейдите в список обследованных адресов', function(){})
 	}
-	// 
 }
 
 $.fn.select2.defaults.set("theme", "bootstrap")
@@ -102,3 +124,5 @@ function handleFiles() {
 }
 }
 
+
+})

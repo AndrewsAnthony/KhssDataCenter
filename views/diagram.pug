@@ -12,22 +12,23 @@ html(lang="en")
 	body
 		.container
 			.row
-				.page-header
+				.page-header.text-center
 					h2.well Результаты обследования
-					a.btn.btn-info(href='/')
-						i.fa.fa-plus
+					.btn-group(role="group")
+						a.btn.btn-info(href='/')
+							i.fa.fa-plus
+							| &nbsp;
+							span.hidden-sm.hidden-xs К форме заполнения 
 						| &nbsp;
-						|К форме заполнения 
-					| &nbsp;
-					a.btn.btn-info(href='/list')
-						i.fa.fa-list-ol
+						a.btn.btn-info(href='/list')
+							i.fa.fa-list-ol
+							| &nbsp;
+							span.hidden-sm.hidden-xs Список адресов с подробной информацией
 						| &nbsp;
-						|Список адресов с подробной информацией
-					| &nbsp;
-					a.btn.btn-info(href='/table')
-						i.fa.fa-table
-						| &nbsp;	
-						|Таблица обследованного
+						a.btn.btn-info(href='/table')
+							i.fa.fa-table
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Таблица обследованного
 			.row
 				.diagram
 					h4.well Цвета района:

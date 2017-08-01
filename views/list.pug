@@ -16,22 +16,23 @@ html(lang="en")
 	body
 		.container
 			.row
-				.page-header
+				.page-header.text-center
 					h2.well <i>Харьковспецстрой</i> <br> <small>Результаты обследования по промазке мягких кровель</small>
-					a.btn.btn-info(href='/') 
-						i.fa.fa-plus
-						| &nbsp;	
-						|Добавить адрес
-					| &nbsp;
-					a.btn.btn-info(href='/table') 
-						i.fa.fa-table
-						| &nbsp;	
-						|Таблица адресов
-					| &nbsp;
-					a.btn.btn-info(href='/diagram')
-						i.fa.fa-bar-chart
-						| &nbsp;	
-						|Отчет по обследованным адресам
+					.btn-group(role="group")
+						a.btn.btn-info(href='/') 
+							i.fa.fa-plus
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Добавить адрес
+						| &nbsp;
+						a.btn.btn-info(href='/table') 
+							i.fa.fa-table
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Таблица адресов
+						| &nbsp;
+						a.btn.btn-info(href='/diagram')
+							i.fa.fa-bar-chart
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Отчет по обследованным адресам
 			.row
 				each obj in listResult
 					.panel-group#accordion
@@ -40,6 +41,25 @@ html(lang="en")
 								.panel-title
 									a(data-toggle="collapse" data-parent="#accordion" href="#collapse" + obj['id'] )
 										|#{obj['id']} ) #{obj['address']['6']} #{obj['address']['7']} , #{obj['address']['11']}
+									span
+										if ( obj['photos'].length )
+											| &nbsp;
+											i.fa.fa-file-image-o
+										if ( ['Текущий ремонт', 'Капитальный ремонт', 'Латочный ремонт'].indexOf(obj['repair']['type']) != -1 )
+											| &nbsp;
+											i.fa.fa-thumbs-o-down
+										else
+											| &nbsp;
+											i.fa.fa-thumbs-o-up
+
+										if ('Повреждения не зафиксированы' !== obj['element']['type'] || 'Повреждения не зафиксированы' !== obj['glue']['type'] || 'Повреждения не зафиксированы' !== obj['metal']['type'])
+											| &nbsp;
+											i.fa.fa-gavel
+
+										if (obj['clear']['value'] > 0)
+											| &nbsp;
+											i.fa.fa-trash
+											
 							.panel-collapse.collapse(id="collapse" + obj['id'])
 								.panel-body
 									.row

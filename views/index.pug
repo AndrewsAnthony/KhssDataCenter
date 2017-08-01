@@ -14,29 +14,30 @@ html(lang="en")
 	body
 		.container
 			.row
-				.page-header
+				.page-header.text-center
 					h2.well <i>Харьковспецстрой</i> <br> <small>форма по промазке мягких кровель</small>
-					a.btn.btn-info(href='/list')
-						i.fa.fa-list-ol
-						| &nbsp;	
-						|Список обследованного
-					| &nbsp;
-					a.btn.btn-info(href='/table')
-						i.fa.fa-table
-						| &nbsp;	
-						|Таблица обследованного
-					| &nbsp;
-					a.btn.btn-info(href='/diagram') 
-						i.fa.fa-bar-chart
+					.btn-group(role="group")
+						a.btn.btn-info(href='/list')
+							i.fa.fa-list-ol
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Список обследованного
 						| &nbsp;
-						|Отчет по обследованным адресам
+						a.btn.btn-info(href='/table')
+							i.fa.fa-table
+							| &nbsp;	
+							span.hidden-sm.hidden-xs Таблица обследованного
+						| &nbsp;
+						a.btn.btn-info(href='/diagram') 
+							i.fa.fa-bar-chart
+							| &nbsp;
+							span.hidden-sm.hidden-xs Отчет по обследованным адресам
 			.row
 				.col-md-8
 					select#js-fetch-list-of-buildings-ajax.form-control
 						option(value="" selected="selected") Введите часть названия адреса и номер строения
 				.col-md-4
-					.requstInfo.well.well-sm.bg-info
-						|Информация по адресу
+					.requstInfo.well.well-sm.bg-info.shake
+						|Форма заблокирова! Выберите адрес.
 
 			.row
 				.col-md-12
@@ -236,4 +237,5 @@ html(lang="en")
 	script(src='js/bootstrap.min.js')
 	script(src='js/select2.full.min.js')
 	script(src='js/i18n/select2.ru.js')
+	script(src='js/bootbox.min.js')
 	script(src='js/script.js')

@@ -14,22 +14,23 @@ html(lang="en")
 		link(href="css/tablesorter.css" rel="stylesheet")
 	body
 		.container-fluid
-			.page-header
+			.page-header.text-center
 				h2.well Итоговая таблица по промазке 
-				a.btn.btn-info(href='/') 
-					i.fa.fa-plus
+				.btn-group(role="group")
+					a.btn.btn-info(href='/') 
+						i.fa.fa-plus
+						| &nbsp;
+						span.hidden-sm.hidden-xs К форме заполнения 
 					| &nbsp;
-					|К форме заполнения 
-				| &nbsp;
-				a.btn.btn-info(href='/list') 
-					i.fa.fa-list-ol
+					a.btn.btn-info(href='/list') 
+						i.fa.fa-list-ol
+						| &nbsp;
+						span.hidden-sm.hidden-xs Список адресов с подробной информацией
 					| &nbsp;
-					|Список адресов с подробной информацией
-				| &nbsp;
-				a.btn.btn-info(href='/diagram') 
-					i.fa.fa-bar-chart
-					| &nbsp;
-					|Отчет по обследованным адресам
+					a.btn.btn-info(href='/diagram') 
+						i.fa.fa-bar-chart
+						| &nbsp;
+						span.hidden-sm.hidden-xs Отчет по обследованным адресам
 
 		table.table-hover.table-bordered.table-condensed.text-center.tablesorter
 			thead
@@ -81,7 +82,8 @@ html(lang="en")
 		|$(document).ready(function() {
 		|	$("table").tablesorter({
 		|		sortMultiSortKey: 'shiftKey'
-		|	});
+		|	})
+		|
 		|});
 	//- script(src='js/select2.full.min.js')
 	//- script(src='js/i18n/select2.ru.js')

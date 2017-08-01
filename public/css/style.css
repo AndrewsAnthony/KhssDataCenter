@@ -76,9 +76,15 @@ svg text {
 	font-family: 'Roboto', sans-serif;
 }
 
-
-
-
+.panel-title a {
+	display: inline-block;
+	width: 80%;
+}
+.panel-title span {
+	text-align: right;
+	display: inline-block;
+	width: 20%;
+}
 
 
 
@@ -90,10 +96,33 @@ svg text {
 }
 .owl-carousel .owl-item {
 	min-height: 250px;
-    background: url(../img/dist/ajax-loader.gif) no-repeat center center;
+	background: url(../img/dist/ajax-loader.gif) no-repeat center center;
 }
 
 
 
 
+
+/*shake effect*/
+.shake {
+  animation: shake 3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translateX(-1px);
+  }
+
+  20%, 80% {
+    transform: translateX(2px);
+  }
+
+  30%, 50%, 70% {
+    transform: translateX(-4px);
+  }
+
+  40%, 60% {
+    transform: translateX(4px);
+  }
+}
 

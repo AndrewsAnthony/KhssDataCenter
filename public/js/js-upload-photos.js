@@ -1,4 +1,3 @@
-var addressList
 $(document).ready(function(){
 
 	$('.js-upload-photos').one('click', function(e){
@@ -36,15 +35,12 @@ $(document).ready(function(){
 
 
 
-	// toggle button
+	// reset input button
 
-
-	var serachController = document.querySelector('.serachController')
-	document.querySelector('.fa-search').parentNode.addEventListener('click', function(){
-		serachController.classList.toggle('toggle')
+	document.querySelector('#resetSearch').addEventListener('click', function(e){
+		document.querySelector('.serachController').value = '';
+		addressList.search('');
 	})
-
-
 
 
 
@@ -52,17 +48,28 @@ $(document).ready(function(){
 	// search pluggin initialize
 
 
-	addressList = new List('searchContainer', { 
-		valueNames: ['searchLink']
+	var addressList = new List('searchContainer', { 
+		valueNames: ['searchLink'],
+		listClass: 'listContainer'
+	});
+
+	$('.serachController').on('keyup', function() {
+		var searchString = $(this).val();
+		addressList.search(searchString);
 	});
 
 
-	// var listObj = new List('container', options);
 
-	// $('#search-field').on('keyup', function() {
-	// 	var searchString = $(this).val();
-	// 	listObj.search(searchString);
-	// });
+
+
+	// stick navbar to top when scrolling
+	$('#scrollMoveDown').click(function(e){
+		$("html, body").stop().animate({ scrollTop: $(document).height()-$(window).height() });
+	})
+
+	$('#scrollMoveUp').click(function(e){
+		$("html, body").stop().animate({ scrollTop: 0 });
+	})
 
 
 })

@@ -86,6 +86,10 @@ svg text {
 	width: 20%;
 }
 
+.panel-default>.panel-heading {
+	background-color: #eeefea;
+}
+
 
 
 
@@ -105,25 +109,25 @@ svg text {
 
 /*shake effect*/
 .shake {
-  animation: shake 3s cubic-bezier(.36,.07,.19,.97) both;
+	animation: shake 3s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 @keyframes shake {
-  10%, 90% {
-    transform: translateX(-1px);
-  }
+	10%, 90% {
+		transform: translateX(-1px);
+	}
 
-  20%, 80% {
-    transform: translateX(2px);
-  }
+	20%, 80% {
+		transform: translateX(2px);
+	}
 
-  30%, 50%, 70% {
-    transform: translateX(-4px);
-  }
+	30%, 50%, 70% {
+		transform: translateX(-4px);
+	}
 
-  40%, 60% {
-    transform: translateX(4px);
-  }
+	40%, 60% {
+		transform: translateX(4px);
+	}
 }
 
 
@@ -132,4 +136,24 @@ svg text {
 
 .toggle {
 	display: none;
+}
+
+
+
+/*stick navbar on top*/
+
+#scrollMoveUp {
+	top: 20px;
+	right: 20px;
+	z-index: 100;
+	position: fixed;
+	opacity: 0.4;
+}
+
+#scrollMoveDown {
+	top: 60px;
+	right: 20px;
+	z-index: 100;
+	position: fixed;
+	opacity: 0.4;
 }

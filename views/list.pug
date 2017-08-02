@@ -16,7 +16,7 @@ html(lang="en")
 	body
 		.container
 			.row
-				.page-header.text-center
+				.page-header
 					h2.well <i>Харьковспецстрой</i> <br> <small>Результаты обследования по промазке мягких кровель</small>
 					.btn-group(role="group")
 						a.btn.btn-info(href='/') 
@@ -33,12 +33,17 @@ html(lang="en")
 							i.fa.fa-bar-chart
 							| &nbsp;	
 							span.hidden-sm.hidden-xs Отчет по обследованным адресам
-						a.btn.btn-info
-							i.fa.fa-search
-					input.btn.btn-default.serachController
+					.btn-group(role="group").pull-right
+						input.btn.btn-default.serachController
+						a.btn.btn-info#resetSearch
+							i.fa.fa-times
+				a.btn.btn-info#scrollMoveUp
+					i.fa.fa-chevron-up
+				a.btn.btn-info#scrollMoveDown
+					i.fa.fa-chevron-down
 			.row#searchContainer
-				each obj in listResult
-					.panel-group#accordion
+				.panel-group#accordion.listContainer
+					each obj in listResult
 						.panel.panel-default
 							.panel-heading
 								.panel-title
@@ -69,11 +74,16 @@ html(lang="en")
 
 										.col-sm-4
 											ul.list-group
-												li.list-group-item Район - #{obj['address']['2']} 
-												li.list-group-item Участок - #{obj['address']['3']} 
-												li.list-group-item Этажность - #{obj['address']['17']}
-												li.list-group-item Тип кровли - #{obj['address']['23']}
-												li.list-group-item Общий объем кровли - #{obj['address']['22']} м2
+												li.list-group-item Район - 
+													b #{obj['address']['2']} 
+												li.list-group-item Участок - 
+													b #{obj['address']['3']} 
+												li.list-group-item Этажность - 
+													b #{obj['address']['17']}
+												li.list-group-item Тип кровли - 
+													b #{obj['address']['23']}
+												li.list-group-item Общий объем кровли - 
+													b #{obj['address']['22']} м2
 											a.btn.btn-default(href="/update/" + obj['key']) Редактировать
 											| &nbsp;
 											if ( !obj['photos'].length )
@@ -99,15 +109,14 @@ html(lang="en")
 															if (obj['repair']['value'] !== "")
 																b #{obj['repair']['value']} м2 <br>
 																i Привязка: 
-																each val, ind in obj['repair']['bindingNumbers']
-																	if (val == '')
-																		| #{val}
-																	else 
-																		b #{obj['repair']['bindingType']} #{val}
-																	if (ind !== obj['repair']['bindingNumbers'].length - 1)
-																		| #{", "}
+																- var bindingNumbers = obj['repair']['bindingNumbers'].join(', ')
+																	if (obj['repair']['bindingType'] != "Отсутствует")
+																		b #{obj['repair']['bindingType']}. #{bindingNumbers}
+																	else
+																		b Отсутствует
+																	
 														.col-sm-6
-															h5 Примичания
+															h5 Примечания
 															| #{obj['repair']['note']}
 												li.list-group-item 
 													.row
@@ -117,16 +126,13 @@ html(lang="en")
 															if (obj['clear']['value'] !== "")
 																b #{obj['clear']['value']} м3 <br>
 																i Привязка: 
-																| #{obj['clear']['bindingType']}
-																each val, ind in obj['clear']['bindingNumbers']
-																		if (val == '')
-																			| #{val}
-																		else 
-																			b #{obj['clear']['bindingType']} #{val}
-																		if (ind !== obj['clear']['bindingNumbers'].length - 1)
-																			| #{", "}
+																- var bindingNumbers = obj['clear']['bindingNumbers'].join(', ')
+																	if (obj['clear']['bindingType'] != "Отсутствует")
+																		b #{obj['clear']['bindingType']}. #{bindingNumbers}
+																	else
+																		b Отсутствует
 														.col-sm-6
-															h5 Примичания
+															h5 Примечания
 															| #{obj['clear']['note']}
 												li.list-group-item 
 													li.list-group-item 
@@ -139,15 +145,13 @@ html(lang="en")
 																if (obj['element']['value'] !== "")
 																	b #{obj['element']['value']} м2 <br>
 																	i Привязка: 
-																	each val, ind in obj['element']['bindingNumbers']
-																		if (val == '')
-																			| #{val}
-																		else 
-																			b #{obj['element']['bindingType']} #{val}
-																		if (ind !== obj['element']['bindingNumbers'].length - 1)
-																			| #{", "}
+																	- var bindingNumbers = obj['element']['bindingNumbers'].join(', ')
+																		if (obj['element']['bindingType'] != "Отсутствует")
+																			b #{obj['element']['bindingType']}. #{bindingNumbers}
+																		else
+																			b Отсутствует
 															.col-sm-6
-																h5 Примичания
+																h5 Примечания
 																| #{obj['element']['note']}
 												li.list-group-item 
 													li.list-group-item 
@@ -160,15 +164,13 @@ html(lang="en")
 																if (obj['glue']['value'] !== "")
 																	b #{obj['glue']['value']} м2 <br>
 																	i Привязка: 
-																	each val, ind in obj['glue']['bindingNumbers']
-																		if (val == '')
-																			| #{val}
-																		else 
-																			b #{obj['glue']['bindingType']} #{val}
-																		if (ind !== obj['glue']['bindingNumbers'].length - 1)
-																			| #{", "}
+																	- var bindingNumbers = obj['glue']['bindingNumbers'].join(', ')
+																		if (obj['glue']['bindingType'] != "Отсутствует")
+																			b #{obj['glue']['bindingType']}. #{bindingNumbers}
+																		else
+																			b Отсутствует
 															.col-sm-6
-																h5 Примичания
+																h5 Примечания
 																| #{obj['glue']['note']}
 												li.list-group-item 
 													li.list-group-item 
@@ -181,15 +183,13 @@ html(lang="en")
 																if (obj['metal']['value'] !== "")
 																	b #{obj['metal']['value']} м2 <br>
 																	i Привязка: 
-																	each val, ind in obj['metal']['bindingNumbers']
-																		if (val == '')
-																			| #{val}
-																		else 
-																			b #{obj['metal']['bindingType']} #{val}
-																		if (ind !== obj['metal']['bindingNumbers'].length - 1)
-																			| #{", "}
+																	- var bindingNumbers = obj['metal']['bindingNumbers'].join(', ')
+																		if (obj['metal']['bindingType'] != "Отсутствует")
+																			b #{obj['metal']['bindingType']}. #{bindingNumbers}
+																		else
+																			b Отсутствует
 															.col-sm-6
-																h5 Примичания
+																h5 Примечания
 																| #{obj['metal']['note']}
 												li.list-group-item 
 													li.list-group-item 
@@ -199,7 +199,7 @@ html(lang="en")
 																hr
 																i #{obj['priority']['type']}
 															.col-sm-6
-																h5 Примичания
+																h5 Примечания
 																| #{obj['priority']['note']}
 
 	script(src='js/jquery-1.11.0.min.js')

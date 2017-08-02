@@ -13,7 +13,7 @@ var path = require('path');
 var async = require('async')
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ help function
 function helpSplitStrToArr(str){
-	return  str.replace(/[^\d,.]/g, '').split(/[,.]/).map(function(val){ return val.substr(0,4) })
+	return  str.replace(/[^\d,.-]/g, '').split(/[,.]/).map(function(val){ return val.substr(0,4) })
 }
 function helpParseInt(num){
 	num = parseInt(num, 10);

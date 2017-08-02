@@ -31,14 +31,14 @@ function successCheckAddress(data){
 		document.querySelector('fieldset').removeAttribute('disabled')
 		var inf = document.querySelector('.requstInfo')
 		inf.classList.remove('shake')
-		inf.innerHTML = 'Форма разблокирована';
+		inf.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> Форма разблокирована';
 		setTimeout(function(){ inf.classList.add('shake') }, 500)
 
 	} else if (data == "Included") {
 		document.querySelector('fieldset').setAttribute('disabled','disabled')
 		var inf = document.querySelector('.requstInfo')
 		inf.classList.remove('shake')
-		inf.innerHTML = 'Форма заблокирована';
+		inf.innerHTML = '<i class="fa fa-exclamation" aria-hidden="true"></i> Форма заблокирована';
 		bootbox.alert('По данному адресу уже внесены данны. Просьба перейдите в список обследованных адресов', function(){})
 	}
 }

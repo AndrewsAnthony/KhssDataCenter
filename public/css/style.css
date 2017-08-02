@@ -126,3 +126,10 @@ svg text {
   }
 }
 
+
+
+/*help classes*/
+
+.toggle {
+	display: none;
+}

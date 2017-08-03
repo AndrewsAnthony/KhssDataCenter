@@ -50,6 +50,7 @@ var Diagram = {
 			})
 			
 		})
+		console.log("novobavarFloorLevelRoofValue", novobavarFloorLevelRoofValue);
 
 		var osnovynFloorLevel = floorLevel.map(function(level){	
 			return osnovynDistrict.map(function(dist){
@@ -58,6 +59,7 @@ var Diagram = {
 				})
 			})
 		})
+		console.log("osnovynFloorLevel", osnovynFloorLevel);
 		osnovynFloorLevelRoofValue = osnovynFloorLevel.map(function(dist){
 			return dist.map(function(adrs){
 				return adrs.map(function(ad){
@@ -271,22 +273,20 @@ var Diagram = {
 		})
 })
 
-var width = 950;
-var height = 600;
+var width = 830;
+var height = 900;
 
 var svg = d3.select('.diagram')
 .append("svg")
 .attr("width", width)
 .attr("height", height)
 
-// var formatNumber = d3.format(",.0f"),
-// format = function(d) { return formatNumber(d) + " TWh"; },
-var color = d3.scale.ordinal(d3.schemeCategory20);
+var color = d3.scale.category20b();
 
 var sankey = d3.sankey()
-.nodeWidth(20)
-.nodePadding(35)
-.extent([[0, 0], [width - 1, height - 6]]);
+.nodeWidth(40)
+.nodePadding(20)
+.extent([[0, 0], [width - 1, height - 10]]);
 
 var link = svg.append("g")
 .attr("class", "links")
@@ -365,9 +365,8 @@ FloorLevelRoofValueLinks = FloorLevelRoofValueLinks.reduce(function(a, b){ retur
 
 var dataToSankey = {
 	'nodes': floorLevelNodes,
-	'links': FloorLevelRoofValueLinks
+	'links': FloorLevelRoofValueLinks.map(function(val){ val.value = val.value>>0; return val }).filter(function(val){ return val.count !== 0 })
 }
-console.info("dataToSankey", dataToSankey['nodes']);
 
 sankey(dataToSankey);
 
@@ -377,8 +376,8 @@ link = link
 .attr("d", d3.sankeyLinkHorizontal())
 .attr("stroke-width", function(d) { return Math.max(1, d.width); });
 
-// link.append("title")
-// .text(function(d) { return d.source + " → " + d.target + "\n" + format(d.value); });
+link.append("title")
+.text(function(d) { return d.source.name + " → " + d.target.name + "\n" + d.value + "м2" + "\n" + d.count + "домов"; });
 
 node = node
 .data(dataToSankey.nodes)
@@ -389,7 +388,7 @@ node.append("rect")
 .attr("y", function(d) { return d.y0; })
 .attr("height", function(d) { return d.y1 - d.y0; })
 .attr("width", function(d) { return d.x1 - d.x0; })
-.attr("fill", function(d) { return color(d.name.replace(/ .*/, "")); })
+.attr("fill", function(d, i) { return color(i); })
 .attr("stroke", "#000");
 
 node.append("text")
@@ -403,7 +402,37 @@ node.append("text")
 .attr("text-anchor", "start");
 
 node.append("title")
-.text(function(d) { return d.name + "\n" + d.value; });
+.text(function(d) { return d.name + "\n" + d.value + "м2"; });
+
+var table = d3.select('.diagram')
+.append("table")
+.attr({
+	'class': 'table-hover table-bordered table-condensed text-center',
+	'table-layout': 'fixed'
+})
+
+var thead = table.append('thead')
+var	tbody = table.append('tbody');
+
+
+thead.append('tr')
+.selectAll('th')
+.data(floorLevel).enter()
+.append('th')
+.text(function (column) { return column + ' этаж.'; });
+
+
+var rows = tbody.selectAll('tr')
+.data(district[0])
+.enter()
+.append('tr');
+
+var cells = rows.selectAll('td')
+.data(FloorLevelRoofValue[0])
+.enter()
+.append('td')
+.text(function (d, i, k) { console.log(d[k].value); return d[k].value?(d[k].value+ ' м2' + ' / ' +  d[k].count + ' зданий'):'-'; });
+
 
 }
 };

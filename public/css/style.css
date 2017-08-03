@@ -76,6 +76,16 @@ svg text {
 	font-family: 'Roboto', sans-serif;
 }
 
+svg .links path:hover {
+	stroke-opacity: 0.6
+}
+
+
+
+
+
+/*bootstrap style*/
+
 .panel-title a {
 	display: inline-block;
 	width: 80%;

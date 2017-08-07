@@ -50,7 +50,6 @@ var Diagram = {
 			})
 			
 		})
-		console.log("novobavarFloorLevelRoofValue", novobavarFloorLevelRoofValue);
 
 		var osnovynFloorLevel = floorLevel.map(function(level){	
 			return osnovynDistrict.map(function(dist){
@@ -59,7 +58,7 @@ var Diagram = {
 				})
 			})
 		})
-		console.log("osnovynFloorLevel", osnovynFloorLevel);
+
 		osnovynFloorLevelRoofValue = osnovynFloorLevel.map(function(dist){
 			return dist.map(function(adrs){
 				return adrs.map(function(ad){
@@ -411,28 +410,81 @@ var table = d3.select('.diagram')
 	'table-layout': 'fixed'
 })
 
+
+d3.select('.diagram').append("div").attr({
+	'class': 'newTable'
+}).html('<h2>Обследуемый объем кровли домов</h2>')
+var table = d3.select('.diagram').append("table").attr({
+	'class': 'table-hover table-bordered table-condensed text-center',
+	'table-layout': 'fixed'
+})
+
 var thead = table.append('thead')
-var	tbody = table.append('tbody');
-
-
 thead.append('tr')
 .selectAll('th')
-.data(floorLevel).enter()
+.data(['Участки \\ Этажность'].concat(floorLevel)).enter()
 .append('th')
-.text(function (column) { return column + ' этаж.'; });
+.html(function (column) { return (column !== 'Участки \\ Этажность')? column + ' этаж.': column; });
+
+FloorLevelRoofValue.forEach(function(dis, indexes){
+
+	var	tbody = table.append('tbody');
+	tbody.append('tr').html(districtNames[indexes].name).attr({
+		'class': 'captionTbody' + ' legend' + indexes
+	})
+	
+	var rows = tbody.selectAll('tr')
+	.data(district[indexes])
+	.enter()
+	.append('tr');
 
 
-var rows = tbody.selectAll('tr')
-.data(district[0])
-.enter()
-.append('tr');
+	var cells = rows.selectAll('td')
+	.data([''].concat(dis))
+	.enter()
+	.append('td')
+	.html(function (d, i, k) { if(i == 0){return district[indexes][k] } else return d[k].value?(Math.floor(d[k].value) + ''):'-'; });
 
-var cells = rows.selectAll('td')
-.data(FloorLevelRoofValue[0])
-.enter()
-.append('td')
-.text(function (d, i, k) { console.log(d[k].value); return d[k].value?(d[k].value+ ' м2' + ' / ' +  d[k].count + ' зданий'):'-'; });
+})
 
+
+
+d3.select('.diagram').append("div").attr({
+	'class': 'newTable'
+}).html('<h2>Количество домов</h2>')
+var table = d3.select('.diagram').append("table")
+.attr({
+	'class': 'table-hover table-bordered table-condensed text-center',
+	'table-layout': 'fixed'
+})
+
+var thead = table.append('thead')
+thead.append('tr')
+.selectAll('th')
+.data(['Участки \\ Этажность'].concat(floorLevel)).enter()
+.append('th')
+.html(function (column) { return (column !== 'Участки \\ Этажность')? column + ' этаж.': column; });
+
+FloorLevelRoofValue.forEach(function(dis, indexes){
+
+	var	tbody = table.append('tbody');
+	tbody.append('tr').html(districtNames[indexes].name).attr({
+		'class': 'captionTbody' + ' legend' + indexes
+	})
+	
+	var rows = tbody.selectAll('tr')
+	.data(district[indexes])
+	.enter()
+	.append('tr');
+
+
+	var cells = rows.selectAll('td')
+	.data([''].concat(dis))
+	.enter()
+	.append('td')
+	.html(function (d, i, k) { if(i == 0){return district[indexes][k] } else return d[k].value?(d[k].count + ''):'-'; });
+
+})
 
 }
 };

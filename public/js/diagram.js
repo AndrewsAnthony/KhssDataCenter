@@ -99,8 +99,8 @@ var Diagram = {
 				}, {count: 0, value: 0})
 			})
 		}
-		var typeRepair = ["Очистка кровли", "Ремонт отдельных элементов", "Проклейка отдельных элементов", "Ремонт металлических элементов"];
-		var typeRepairObj = ["clear", "element", "glue", "metal"];
+		var typeRepair = ["Очистка кровли", "Ремонт отдельных элементов", "Проклейка отдельных элементов", "Ремонт металлических элементов", "Ремонт мягкой кровли"];
+		var typeRepairObj = ["clear", "element", "glue", "metal", "repair"];
 
 		typeRepair.forEach(function(val, ind){
 			helpfunction(dataNovo, val, novobavarDistrict, typeRepairObj[ind])
@@ -114,8 +114,8 @@ var Diagram = {
 				// default params
 				var params = {
 					parentSelector: ".diagram",
-					graphWidth: 350,
-					graphHeigth: 280,
+					graphWidth: 750,
+					graphHeigth: 400,
 					title: typeOfRepair,
 					yAxisName: "№ Участка",
 					xLeftAxisName: "Количество домов",
@@ -429,7 +429,7 @@ thead.append('tr')
 FloorLevelRoofValue.forEach(function(dis, indexes){
 
 	var	tbody = table.append('tbody');
-	tbody.append('tr').html(districtNames[indexes].name).attr({
+	tbody.append('div').html(districtNames[indexes].name).attr({
 		'class': 'captionTbody' + ' legend' + indexes
 	})
 	
@@ -468,7 +468,7 @@ thead.append('tr')
 FloorLevelRoofValue.forEach(function(dis, indexes){
 
 	var	tbody = table.append('tbody');
-	tbody.append('tr').html(districtNames[indexes].name).attr({
+	tbody.append('div').html(districtNames[indexes].name).attr({
 		'class': 'captionTbody' + ' legend' + indexes
 	})
 	

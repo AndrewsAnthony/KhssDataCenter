@@ -43,6 +43,7 @@ html(lang="en")
 				th.text-left Этажность
 				th.text-left Тип кровли
 				th.text-left Общий объем кровли м2
+				th.text-left Объем ремонта кровли м2
 				th.text-left Очистка от мусора м3
 				th.text-left Ремонт отдельных мест м2
 				th.text-left Проклейка швов мп
@@ -59,6 +60,9 @@ html(lang="en")
 						td #{obj['address']['17']}
 						td #{obj['address']['23']}
 						td #{obj['address']['22']}
+						td 
+							if (obj['repair']['value'] !== "")
+								b #{obj['repair']['value']} м2
 						td 
 							if (obj['clear']['value'] !== "")
 								b #{obj['clear']['value']} м3 
